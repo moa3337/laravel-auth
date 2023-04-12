@@ -9,18 +9,21 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     <!-- Usando Vite -->
     @vite(['resources/js/app.js'])
 </head>
 
-<body class=" bg-opacity-75">
-    <div id="app">
-<body class="bg-dark bg-opacity-50">
-    <div>
+<body class="">
+    <div class="container">
         @include("layouts.partials.navbar")
-
-        <main class="">
+        
         <main class="container">
+            
+            <div>
+                @yield('actions')
+            </div>
+
             @yield('content')
         </main>
     </div>
