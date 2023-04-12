@@ -26,7 +26,7 @@ Route::middleware('auth')
     ->prefix('/admin')
     ->name('admin.')
     ->group(function () {
-        Route::resource('project', ProjectController::class);
+        Route::resource('projects', ProjectController::class);
     });
 
 Route::middleware('auth')

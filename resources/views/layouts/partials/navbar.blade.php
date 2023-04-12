@@ -20,10 +20,10 @@
                     @auth 
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('home') }}">{{ __('Home') }}</a>
+                            <a class="nav-link" href="{{ route('dashboard') }}">{{ __('Home') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('admin.projects,index') }}">{{ __('Projects') }}</a>
+                            <a class="nav-link" href="{{ route('admin.projects.index') }}">{{ __('Projects') }}</a>
                         </li>
                     </ul>
                     @endauth
