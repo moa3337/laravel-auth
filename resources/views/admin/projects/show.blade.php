@@ -4,6 +4,7 @@
 
 @section('actions')
     <a class="btn btn-primary" href="{{ route('admin.projects.index') }}">Torna ai progetti</a>
+    <a class="btn btn-primary" href="{{ route('admin.projects.edit', $project) }}">Modifica progetto</a>
 @endsection
 
 @section('content')
