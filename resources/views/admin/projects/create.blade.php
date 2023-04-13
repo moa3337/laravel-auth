@@ -11,25 +11,44 @@
 @endsection
 
 @section('content')
+
+@include('layouts.partials.errors')
+
 <section class="card">
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.projects.store') }}" class="row">
+        <form method="POST" action="{{ route('admin.projects.store') }}" class="row" enctype="multipart/form-data">
             @csrf
             
             <div class="col">
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" class="form-control">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" />
+                @error('title')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
     
-                <label for="image">Image</label>
-                <input type="text" name="image" id="image" class="form-control">
+                <label for="image" class="form-label">Image</label>
+                <input type="text" name="image" id="image" class="form-control @error('image') is-invalid @enderror" value="{{ old('image') }}" />
+                @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             <div class="col">
-                <label for="text">Text</label>
-                <input type="text" name="text" id="text" class="form-control">
+                <label for="text" class="form-label">Text</label>
+                <textarea type="text" name="text" id="text" class="form-control @error('text') is-invalid @enderror" value="{{ old('text') }}" rows="4">
+                </textarea>
+                @error('text')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
-            <input type="submit" class="" value="salva"/>
+            <input class="mt-3" type="submit" class="" value="salva"/>
 
         </form>
     </div>

@@ -1,8 +1,14 @@
 @extends("layouts.app")
 
+@section('title', $project->title)
+
+@section('actions')
+    <a class="btn btn-primary" href="{{ route('admin.projects.index') }}">Torna ai progetti</a>
+@endsection
+
 @section('content')
+
     <section>
-        <a class="btn btn-primary" href="{{ route('admin.projects.index') }}">Torna ai progetti</a>
         <h3></h3>
         <figure class="float-end">
             <img src="{{ $project->image }}" class="w-50" alt="">

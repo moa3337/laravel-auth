@@ -15,7 +15,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(12);
+        $projects = Project::orderBy('updated_at', 'DESC')->paginate(12);
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -37,12 +37,29 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'title' => 'required|string|max:100',
+                'image' => 'nullable|string',
+                'text' => 'required|string',
+            ],
+            [
+                'title.required' => 'Il titolo è obbligatorio',
+                'title.string' => 'Il titolo deve essere una stringa',
+                'title.max' => 'Il titolo non può avere più 100 caratteri',
+                'image.string' => 'L\'immagine deve essere una stringa',
+                'text.required' => 'La descrizione è obbligatoria',
+                'text.string' => 'La descrizione deve essere una stringa',
+            ]
+        );
+
         $project = new Project;
         $project->fill($request->all());
         $project->slug = Project::generateSlug($project->title);
         $project->save();
 
-        return to_route('admin.projects.show', $project);
+        return to_route('admin.projects.show', $project)
+            ->with('message', 'Progetto creato con successo');
     }
 
     /**
@@ -64,7 +81,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -76,7 +93,27 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $request->validate(
+            [
+                'title' => 'required|string|max:100',
+                'image' => 'nullable|string',
+                'text' => 'required|string',
+            ],
+            [
+                'title.required' => 'Il titolo è obbligatorio',
+                'title.string' => 'Il titolo deve essere una stringa',
+                'title.max' => 'Il titolo non può avere più 100 caratteri',
+                'image.string' => 'L\'immagine deve essere una stringa',
+                'text.required' => 'La descrizione è obbligatoria',
+                'text.string' => 'La descrizione deve essere una stringa',
+            ]
+        );
+
+        $project->fill($request->all());
+        $project->slug = Project::generateSlug($project->title);
+        $project->save();
+        return to_route('admin.projects.show', $project)
+            ->with('message', 'Progetto modificato con successo');
     }
 
     /**
@@ -87,6 +124,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $id_project = $project->id;
+        $project->delete();
+        return to_route('admin.projects.index')
+            ->with('message', "Progetto $id_project eliminito!");
     }
 }

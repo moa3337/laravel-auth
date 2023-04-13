@@ -32,4 +32,13 @@ class Project extends Model
 
         return $possible_slug;
     }
+
+    protected function getUpdatedAttribute($value)
+    {
+        return date('d/m/y', strtotime($value));
+    }
+    protected function getCreatedAttribute($value)
+    {
+        return date('D/M/Y', strtotime($value));
+    }
 }

@@ -17,15 +17,27 @@
 <body class="">
     <div class="container">
         @include("layouts.partials.navbar")
+
         
         <main class="container">
-            
             <div>
+                <h2>
+                    @yield('title')
+                </h2>
+            
                 @yield('actions')
             </div>
+
+            @if (session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+            @endif
 
             @yield('content')
         </main>
     </div>
+
+    @yield('modals')
 </body>
 </html>
