@@ -12,7 +12,7 @@
     <section>
         <h3></h3>
         <figure class="float-end">
-            <img src="{{ $project->image }}" class="w-50" alt="">
+            <img src="{{ $project->getImageUri() }}" class="w-50" alt="{{ $project->slug }}">
             <figcaption>
                 <p class="text-muted">{{ $project->title }}</p>
             </figcaption>

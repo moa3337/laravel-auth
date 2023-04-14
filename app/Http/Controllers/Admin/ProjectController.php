@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -41,22 +43,30 @@ class ProjectController extends Controller
         $request->validate(
             [
                 'title' => 'required|string|max:100',
-                'image' => 'nullable|string',
+                'image' => 'nullable|image',
                 'text' => 'required|string',
             ],
             [
                 'title.required' => 'Il titolo è obbligatorio',
                 'title.string' => 'Il titolo deve essere una stringa',
                 'title.max' => 'Il titolo non può avere più 100 caratteri',
-                'image.string' => 'L\'immagine deve essere una stringa',
+                'image.image' => 'L\'immagine deve essere un\'immagine',
                 'text.required' => 'La descrizione è obbligatoria',
                 'text.string' => 'La descrizione deve essere una stringa',
             ]
         );
 
+        $data = $request->all();
+
+        if (Arr::exists($data, 'image')) {
+            $path = Storage::put('uploads/projects', $data['image']);
+            //$data['image'] = $path;
+        }
+
         $project = new Project;
-        $project->fill($request->all());
+        $project->fill($data);
         $project->slug = Project::generateSlug($project->title);
+        $project->image = $path;
         $project->save();
 
         return to_route('admin.projects.show', $project)
@@ -97,22 +107,31 @@ class ProjectController extends Controller
         $request->validate(
             [
                 'title' => 'required|string|max:100',
-                'image' => 'nullable|string',
+                'image' => 'nullable|image',
                 'text' => 'required|string',
             ],
             [
                 'title.required' => 'Il titolo è obbligatorio',
                 'title.string' => 'Il titolo deve essere una stringa',
                 'title.max' => 'Il titolo non può avere più 100 caratteri',
-                'image.string' => 'L\'immagine deve essere una stringa',
+                'image.image' => 'L\'immagine deve essere un\'immagine',
                 'text.required' => 'La descrizione è obbligatoria',
                 'text.string' => 'La descrizione deve essere una stringa',
             ]
         );
 
-        $project->fill($request->all());
+        $data = $request->all();
+
+        if (Arr::exists($data, 'image')) {
+            if ($project->image) Storage::delete($project->image);
+            $path = Storage::put('uploads/projects', $data['image']);
+            $data['image'] = $path;
+        }
+
+        $project->fill($data);
         $project->slug = Project::generateSlug($project->title);
         $project->save();
+
         return to_route('admin.projects.show', $project)
             ->with('message', 'Progetto modificato con successo');
     }
@@ -126,7 +145,9 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $id_project = $project->id;
+        if ($project->image) Storage::delete($project->image);
         $project->delete();
+
         return to_route('admin.projects.index')
             ->with('message', "Progetto $id_project eliminito!");
     }
