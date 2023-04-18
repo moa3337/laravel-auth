@@ -175,12 +175,28 @@ class ProjectController extends Controller
     public function forceDelete(int $id)
     {
         $project = Project::where('id', $id)->onlyTrashed()->first();
-        $id_project = $project->id;
+        //$id_project = $project->id;
 
         if ($project->image) Storage::delete($project->image);
         $project->forceDelete();
 
+        return to_route('admin.projects.trash')
+            ->with('message', "Progetto $id eliminito!");
+    }
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(int $id)
+    {
+        $project = Project::where('id', $id)->onlyTrashed()->first();
+        //$id_project = $project->id;
+
+        $project->restore();
+
         return to_route('admin.projects.index')
-            ->with('message', "Progetto $id_project eliminito!");
+            ->with('message', "Progetto $id ripristinato correttamente");
     }
 }

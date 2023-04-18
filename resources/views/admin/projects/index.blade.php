@@ -36,7 +36,7 @@
             <tr>
                 <th scope="row">{{ $project->id }}</th>
                 <td>{{ $project->title }}</td>
-                <td>{{ $project->getAbstract() }}</td>
+                <td>{{ $project->getAbstract(10) }}</td>
                 <td>{{ $project->updated_at }}</td>
                 <td>{{ $project->created_at }}</td>
                 <td>

@@ -24,11 +24,11 @@
                 </th>
                 <th scope="col">
                     Ultima modifica
-                    <a href="updated_at"></a>
+                    <a href="{{'updated_at' != 'DESC'}}"></a>
                 </th>
                 <th scope="col">
                     Data cancellazione
-                    <a href="created_at"></a>
+                    <a href="deleted_at"></a>
                 </th>
                 <th scope="col">
                     Elimina
@@ -50,11 +50,13 @@
                     <a href="{{ route('admin.projects.show', $project) }}">
                         <i class="bi bi-eye"></i>
                     </a>
+                    --}}
                     <a href="{{ route('admin.projects.edit', $project) }}">
                         <i class="bi bi-pencil mx-2"></i>
                     </a>
-                    --}}
-                    <a href="{{ route('admin.projects.edit', $project) }}" data-bs-toggle="modal" data-bs-target="#delete-post-modal-{{ $project->id }}"
+                    
+                    
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#restore-post-modal-{{ $project->id }}"
                         data-bs-toggle="tooltip" data-bs-placement="top"
                         data-bs-custom-class="custom-tooltip"
                         data-bs-title="This is a top tooltip.">
@@ -93,6 +95,32 @@
                         @csrf
 
                         <button type="submit" class="btn btn-danger">Elimina</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="restore-post-modal-{{ $project->id }}" tabindex="-1" 
+        aria-labelledby="restore-post-modal-{{ $project->id }}-label" aria-hidden= "true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="restore-post-modal-{{ $project->id }}-label">
+                        Stai ripristinando questo progetto!
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler ripristinare {{ $project->title }}?
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <form method="POST" action="{{ route('admin.projects.restore', $project) }}">
+                        @method('put')
+                        @csrf
+
+                        <button type="submit" class="btn btn-primary">Ripristina</button>
                     </form>
                 </div>
             </div>
