@@ -147,11 +147,11 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $id_project = $project->id;
-        if ($project->image) Storage::delete($project->image);
+        //if ($project->image) Storage::delete($project->image);
         $project->delete();
 
         return to_route('admin.projects.index')
-            ->with('message', "Progetto $id_project eliminito!");
+            ->with('message', "Progetto $id_project è stato spostato nel cestino");
     }
 
     /**
@@ -164,5 +164,23 @@ class ProjectController extends Controller
         $projects = Project::onlyTrashed()->get();
 
         return view('admin.projects.trash', compact('projects'));
+    }
+
+    /**
+     * Force delete the specified resource from storage.
+     *
+     * @param  \App\Models\Project  $project
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete(int $id)
+    {
+        $project = Project::where('id', $id)->onlyTrashed()->first();
+        $id_project = $project->id;
+
+        if ($project->image) Storage::delete($project->image);
+        $project->forceDelete();
+
+        return to_route('admin.projects.index')
+            ->with('message', "Progetto $id_project eliminito!");
     }
 }

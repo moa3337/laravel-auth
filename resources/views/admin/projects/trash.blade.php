@@ -19,15 +19,19 @@
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
                 <th scope="col">
-                    Ultima modifica
-                    <a href="updated_at"></a>
-                </th>
-                <th scope="col">
                     Creazione
                     <a href="created_at"></a>
                 </th>
                 <th scope="col">
+                    Ultima modifica
+                    <a href="updated_at"></a>
+                </th>
+                <th scope="col">
                     Data cancellazione
+                    <a href="created_at"></a>
+                </th>
+                <th scope="col">
+                    Elimina
                     <a href="created_at"></a>
                 </th>
             </tr>
@@ -38,15 +42,18 @@
                 <th scope="row">{{ $project->id }}</th>
                 <td>{{ $project->title }}</td>
                 <td>{{ $project->getAbstract() }}</td>
+                <td>{{ $project->creted_at }}</td>
                 <td>{{ $project->updated_at }}</td>
                 <td>{{ $project->deleted_at }}</td>
                 <td>
+                    {{--
                     <a href="{{ route('admin.projects.show', $project) }}">
                         <i class="bi bi-eye"></i>
                     </a>
                     <a href="{{ route('admin.projects.edit', $project) }}">
                         <i class="bi bi-pencil mx-2"></i>
                     </a>
+                    --}}
                     <a href="{{ route('admin.projects.edit', $project) }}" data-bs-toggle="modal" data-bs-target="#delete-post-modal-{{ $project->id }}"
                         data-bs-toggle="tooltip" data-bs-placement="top"
                         data-bs-custom-class="custom-tooltip"
@@ -55,15 +62,14 @@
                     </a>
                 </td>
             </tr>  
-            
+
             @empty
             @endforelse
         </tbody>
     </table> 
-    {{ $projects->links() }}
+    {{--{{ $projects->links() }}--}}
 @endsection
 
-{{--
 @section('modals')
 @foreach ($projects as $project)
     
@@ -82,7 +88,7 @@
                 </div>
                 <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                    <form method="POST" action="{{ route('admin.projects.destroy', $project) }}">
+                    <form method="POST" action="{{ route('admin.projects.force-delete', $project) }}">
                         @method('delete')
                         @csrf
 
@@ -95,4 +101,3 @@
     
 @endforeach
 @endsection
---}}
