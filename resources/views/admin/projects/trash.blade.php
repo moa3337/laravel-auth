@@ -1,14 +1,11 @@
 @extends("layouts.app")
 
-@section('title', 'My Projects')
+@section('title', 'Trash Projects')
 
 @section('actions')
 <div>
-    <a href="{{ route('admin.projects.create') }}" class="btn btn-primary my-2">
-        Crea nuovo progetto
-    </a>
-    <a href="{{ route('admin.projects.trash') }}" class="btn btn-secondary my-2">
-        Vai al cestino
+    <a href="{{ route('admin.projects.index') }}" class="btn btn-primary my-2">
+        Torna ai progetti
     </a>
 </div>
 @endsection
@@ -29,6 +26,10 @@
                     Creazione
                     <a href="created_at"></a>
                 </th>
+                <th scope="col">
+                    Data cancellazione
+                    <a href="created_at"></a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +39,7 @@
                 <td>{{ $project->title }}</td>
                 <td>{{ $project->getAbstract() }}</td>
                 <td>{{ $project->updated_at }}</td>
-                <td>{{ $project->created_at }}</td>
+                <td>{{ $project->deleted_at }}</td>
                 <td>
                     <a href="{{ route('admin.projects.show', $project) }}">
                         <i class="bi bi-eye"></i>
@@ -46,23 +47,23 @@
                     <a href="{{ route('admin.projects.edit', $project) }}">
                         <i class="bi bi-pencil mx-2"></i>
                     </a>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#delete-post-modal-{{ $project->id }}"
+                    <a href="{{ route('admin.projects.edit', $project) }}" data-bs-toggle="modal" data-bs-target="#delete-post-modal-{{ $project->id }}"
                         data-bs-toggle="tooltip" data-bs-placement="top"
                         data-bs-custom-class="custom-tooltip"
                         data-bs-title="This is a top tooltip.">
                         <i class="bi bi-trash mx-2 text-danger"></i>
                     </a>
                 </td>
-            </tr>
+            </tr>  
             
             @empty
-            
             @endforelse
         </tbody>
     </table> 
     {{ $projects->links() }}
 @endsection
 
+{{--
 @section('modals')
 @foreach ($projects as $project)
     
@@ -94,3 +95,4 @@
     
 @endforeach
 @endsection
+--}}

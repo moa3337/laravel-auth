@@ -26,8 +26,11 @@ Route::middleware('auth')
     ->prefix('/admin')
     ->name('admin.')
     ->group(function () {
-        Route::resource('projects', ProjectController::class)
-            ->parameters(['projects' => 'project:slug']);
+        Route::get('/projects/trash', [ProjectController::class, 'trash'])->name('projects.trash');
+        Route::put('/projects/{projects}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
+        Route::delete('/projects/{projects}/force-delete', [ProjectController::class, 'force-delete'])->name('projects.force-delete');
+        Route::resource('projects', ProjectController::class);
+        //->parameters(['projects' => 'project:slug']);
     });
 
 Route::middleware('auth')

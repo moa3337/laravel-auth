@@ -15,13 +15,13 @@
 </head>
 
 <body class="">
-    <div class="container">
+    <div class="container-fluid p-0">
         @include("layouts.partials.navbar")
 
         
         <main class="container">
             <div>
-                <h2>
+                <h2 class="mt-3">
                     @yield('title')
                 </h2>
             
@@ -39,5 +39,7 @@
     </div>
 
     @yield('modals')
+
+    @yield('scripts')
 </body>
 </html>

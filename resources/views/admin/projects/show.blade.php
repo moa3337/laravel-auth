@@ -3,20 +3,25 @@
 @section('title', $project->title)
 
 @section('actions')
-    <a class="btn btn-primary" href="{{ route('admin.projects.index') }}">Torna ai progetti</a>
-    <a class="btn btn-primary" href="{{ route('admin.projects.edit', $project) }}">Modifica progetto</a>
+    <div class="my-4">
+        <a class="btn btn-primary me-2" href="{{ route('admin.projects.index') }}">Torna ai progetti</a>
+        <a class="btn btn-primary" href="{{ route('admin.projects.edit', $project) }}">Modifica progetto</a>
+    </div>
 @endsection
 
 @section('content')
 
-    <section>
-        <h3></h3>
-        <figure class="float-end">
-            <img src="{{ $project->getImageUri() }}" class="w-50" alt="{{ $project->slug }}">
-            <figcaption>
-                <p class="text-muted">{{ $project->title }}</p>
-            </figcaption>
-        </figure>
-        <p>{{ $project->text }}</p>
+    <section class="card">
+        <div class="card-body ">
+            <h3></h3>
+            <figure class="float-end">
+                <img src="{{ $project->getImageUri() }}" class="w-50" alt="{{ $project->slug }}">
+                <figcaption>
+                    <p class="text-muted">{{ $project->title }}</p>
+                </figcaption>
+            </figure>
+            <p>{{ $project->text }}</p>
+        </div>
     </section> 
+
 @endsection

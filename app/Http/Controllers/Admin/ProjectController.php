@@ -17,7 +17,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::orderBy('updated_at', 'DESC')->paginate(12);
+        $projects = Project::orderBy('updated_at', 'DESC')->paginate(10);
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -45,6 +45,7 @@ class ProjectController extends Controller
                 'title' => 'required|string|max:100',
                 'image' => 'nullable|image',
                 'text' => 'required|string',
+                'published' => 'boolean',
             ],
             [
                 'title.required' => 'Il titolo è obbligatorio',
@@ -109,6 +110,7 @@ class ProjectController extends Controller
                 'title' => 'required|string|max:100',
                 'image' => 'nullable|image',
                 'text' => 'required|string',
+                'published' => 'boolean',
             ],
             [
                 'title.required' => 'Il titolo è obbligatorio',
@@ -121,6 +123,8 @@ class ProjectController extends Controller
         );
 
         $data = $request->all();
+        $data['slug'] = Project::generateSlug($data['title']);
+        $data['published'] = $request->has('published') ? 1 : 0;
 
         if (Arr::exists($data, 'image')) {
             if ($project->image) Storage::delete($project->image);
@@ -128,9 +132,7 @@ class ProjectController extends Controller
             $data['image'] = $path;
         }
 
-        $project->fill($data);
-        $project->slug = Project::generateSlug($project->title);
-        $project->save();
+        $project->update($data);
 
         return to_route('admin.projects.show', $project)
             ->with('message', 'Progetto modificato con successo');
@@ -150,5 +152,17 @@ class ProjectController extends Controller
 
         return to_route('admin.projects.index')
             ->with('message', "Progetto $id_project eliminito!");
+    }
+
+    /**
+     * Display a listing of the trashed resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $projects = Project::onlyTrashed()->get();
+
+        return view('admin.projects.trash', compact('projects'));
     }
 }
